@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Stonebreaker and Hudson</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    /*
+     * Custom CSS file. Override it as you like.
+     *
+     * Credits to @killercup (https://gist.github.com/killercup); Extracted from this Gist:
+     *   https://gist.github.com/killercup/5917178
+     */
+
+    html {
+        font-size: 100%;
+        overflow-y: scroll;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+    }
+
+    body {
+        color: #444;
+        font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+        font-size: 12px;
+        line-height: 1.7;
+        padding: 1em;
+        margin: auto;
+        max-width: 42em;
+        background: #fefefe;
+    }
+
+    a {
+        color: #0645ad;
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: #0b0080;
+    }
+
+    a:hover {
+        color: #06e;
+    }
+
+    a:active {
+        color: #faa700;
+    }
+
+    a:focus {
+        outline: thin dotted;
+    }
+
+    *::-moz-selection {
+        background: rgba(255, 255, 0, 0.3);
+        color: #000;
+    }
+
+    *::selection {
+        background: rgba(255, 255, 0, 0.3);
+        color: #000;
+    }
+
+    a::-moz-selection {
+        background: rgba(255, 255, 0, 0.3);
+        color: #0645ad;
+    }
+
+    a::selection {
+        background: rgba(255, 255, 0, 0.3);
+        color: #0645ad;
+    }
+
+    p {
+        margin: 1em 0;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: #111;
+        line-height: 125%;
+        margin-top: 2em;
+        font-weight: normal;
+    }
+
+    h4,
+    h5,
+    h6 {
+        font-weight: bold;
+    }
+
+    h1 {
+        font-size: 2.5em;
+    }
+
+    h2 {
+        font-size: 2em;
+    }
+
+    h3 {
+        font-size: 1.5em;
+    }
+
+    h4 {
+        font-size: 1.2em;
+    }
+
+    h5 {
+        font-size: 1em;
+    }
+
+    h6 {
+        font-size: 0.9em;
+    }
+
+    blockquote {
+        color: #666666;
+        margin: 0;
+        padding-left: 3em;
+        border-left: 0.5em #EEE solid;
+    }
+
+    hr {
+        display: block;
+        height: 2px;
+        border: 0;
+        border-top: 1px solid #aaa;
+        border-bottom: 1px solid #eee;
+        margin: 1em 0;
+        padding: 0;
+    }
+
+    pre,
+    code,
+    kbd,
+    samp {
+        color: #000;
+        font-family: monospace, monospace;
+        _font-family: 'courier new', monospace;
+        font-size: 0.98em;
+    }
+
+    pre {
+        white-space: pre;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    b,
+    strong {
+        font-weight: bold;
+    }
+
+    dfn {
+        font-style: italic;
+    }
+
+    ins {
+        background: #ff9;
+        color: #000;
+        text-decoration: none;
+    }
+
+    mark {
+        background: #ff0;
+        color: #000;
+        font-style: italic;
+        font-weight: bold;
+    }
+
+    sub,
+    sup {
+        font-size: 75%;
+        line-height: 0;
+        position: relative;
+        vertical-align: baseline;
+    }
+
+    sup {
+        top: -0.5em;
+    }
+
+    sub {
+        bottom: -0.25em;
+    }
+
+    ul,
+    ol {
+        margin: 1em 0;
+        padding: 0 0 0 2em;
+    }
+
+    li p:last-child {
+        margin-bottom: 0;
+    }
+
+    ul ul,
+    ol ol {
+        margin: .3em 0;
+    }
+
+    dl {
+        margin-bottom: 1em;
+    }
+
+    dt {
+        font-weight: bold;
+        margin-bottom: .8em;
+    }
+
+    dd {
+        margin: 0 0 .8em 2em;
+    }
+
+    dd:last-child {
+        margin-bottom: 0;
+    }
+
+    img {
+        border: 0;
+        -ms-interpolation-mode: bicubic;
+        vertical-align: middle;
+    }
+
+    figure {
+        display: block;
+        text-align: center;
+        margin: 1em 0;
+    }
+
+    figure img {
+        border: none;
+        margin: 0 auto;
+    }
+
+    figcaption {
+        font-size: 0.8em;
+        font-style: italic;
+        margin: 0 0 .8em;
+    }
+
+    table {
+        margin-bottom: 2em;
+        border-bottom: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-spacing: 0;
+        border-collapse: collapse;
+    }
+
+    table th {
+        padding: .2em 1em;
+        background-color: #eee;
+        border-top: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+    }
+
+    table td {
+        padding: .2em 1em;
+        border-top: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        vertical-align: top;
+    }
+
+    .author {
+        font-size: 1.2em;
+        text-align: center;
+    }
+
+    @media only screen and (min-width: 480px) {
+        body {
+            font-size: 14px;
+        }
+    }
+
+    @media only screen and (min-width: 768px) {
+        body {
+            font-size: 16px;
+        }
+    }
+
+    @media print {
+        * {
+            background: transparent !important;
+            color: black !important;
+            filter: none !important;
+            -ms-filter: none !important;
+        }
+        body {
+            font-size: 12pt;
+            max-width: 100%;
+        }
+        a,
+        a:visited {
+            text-decoration: underline;
+        }
+        hr {
+            height: 1px;
+            border: 0;
+            border-bottom: 1px solid black;
+        }
+        a[href]:after {
+            content: " (" attr(href) ")";
+        }
+        abbr[title]:after {
+            content: " (" attr(title) ")";
+        }
+        .ir a:after,
+        a[href^="javascript:"]:after,
+        a[href^="#"]:after {
+            content: "";
+        }
+        pre,
+        blockquote {
+            border: 1px solid #999;
+            padding-right: 1em;
+            page-break-inside: avoid;
+        }
+        tr,
+        img {
+            page-break-inside: avoid;
+        }
+        img {
+            max-width: 100% !important;
+        }
+        @page :left {
+            margin: 15mm 20mm 15mm 10mm;
+        }
+        @page :right {
+            margin: 15mm 10mm 15mm 20mm;
+        }
+        p,
+        h2,
+        h3 {
+            orphans: 3;
+            widows: 3;
+        }
+        h2,
+        h3 {
+            page-break-after: avoid;
+        }
+    }  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title"><p><img src="images/Basil_Stonebreaker.png" style="width:2in" alt="Stonebreaker" /> and <img src="images/Isadora_Hudson.png" style="width:2in" alt="Hudson" /></p></h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#basil-leaves-his-arborial-paradise">Basil leaves his arborial paradise</a></li>
+<li><a href="#isadora-makes-a-friend">Isadora makes a Friend</a></li>
+<li><a href="#bernard-makes-a-deal">Bernard Makes a Deal</a></li>
+<li><a href="#isadora-finishes-a-job">Isadora Finishes a Job</a></li>
+<li><a href="#basil-makes-it-to-the-city">Basil makes it to the city</a></li>
+<li><a href="#basil-drops-off-a-duffle-bag">Basil drops off a Duffle Bag</a></li>
+<li><a href="#bernard-gets-toys-for-basil">Bernard gets toys for Basil</a>
+<ul>
+<li><a href="#by-the-mismi-zine"><img src="images/cover.png" alt="By the MISMI Zine" /></a></li>
+</ul></li>
+</ul>
+</nav>
+<div style="page-break-after: always;">
+
+</div>
+<h1 id="basil-leaves-his-arborial-paradise">Basil leaves his arborial paradise</h1>
+<p>The sky overhead shifts, morphing into a luminescent burnt orange that casts an orange-red glow on everything below. Covered in ash, the road parts ahead as our driver gazes at the clear skies, a river, and a thick forest in the rearview mirror. Max, his handler, insisted on city visits for social interaction, but the ongoing forest fires transformed this departure from Basil’s personal paradise into a scene straight out of Dante’s Inferno.</p>
+<p>Basil swiftly maneuvers his fingers across the chorded keyboard strapped to his thigh. His message requests a doubled fee for increased health risks and necessary safety equipment due to the raging fires. ‘Agreed,’ blinks the response before slowly deleting itself. A prompt materializes on the dashboard, ‘Modification agreed, void if late,’ accompanied by a cartoonish ‘To agree, press I AGREE now.’ He reluctantly selects ‘I AGREE,’ grumbling about the necessity for protective gear, and immediately notifies his supplier about the route and estimated arrival time.</p>
+<p>As he peers through the windscreen, flakes bounce off. ‘Maybe that used to be a house?’ he ponders. The atmosphere shifts from crisp to engulfing as Basil’s Mercedes 300D hits the city’s heat dome, drastically reducing visibility. Toggling various dashboard switches, Basil struggles to enhance visibility using infrared and motion detection, realizing the imminent threat of fire. He reflects on the root cause: faulty high-voltage wiring and negligent brush management near power lines.</p>
+<p>Relaxing into his seat and adhering to the speed limit, memories flood back of a summer job shepherding for a power company. Managing the flock near power lines taught him valuable lessons in electricity distribution, safety, and hazard pay for the risk. He reminisces about using a light bulb to gauge proximity to the lines, the flickering indicator of a dangerous threshold.</p>
+<p>Making good time through forest fire debris, Basil exits into an exurban area, commenting, ‘You’ll never catch me living out here.’ Wondering about Bernard’s move, he reminisces about his loft and favorite drinking establishment, contrasting it with the remote living choice Bernard made.</p>
+<div style="page-break-after: always;">
+
+</div>
+<h1 id="isadora-makes-a-friend">Isadora makes a Friend</h1>
+<p>Wearing a full-face respirator and a duffel bag backpack wrapped in plastic, Isadora navigates the desolate city. Few people are out, mostly adorned in respirators or using wet bandanas and goggles. Isadora finds the scene rather steampunk-esque; her mobility is less hindered compared to others due to her respirator connected to a portable oxygen tank and air pre-filter on her hip. The pre-filter not only eases the job of the face-mounted filters but also sweetens the otherwise acrid air she walks through. Her destination? A data center concealed and inaccessible to the general populace.</p>
+<p>For three years, Isadora dedicated herself to establishing communications for her volunteer platoon. Her squad operates on the frontlines, managing radios, intercepting enemy communications, and gathering intelligence before advancing. Remembering an almost failed mission her face lights up as she remembers crawling down a tower in the dead of night and looking towards the enemy expecting her triumphant signature move to happen. Running out of time she looks through her nightvision goggles and sees the approaching enemy.</p>
+<p>Moments later, in the distance, barely visible on the horizon, a series of red and yellow explosions mark the enemy’s location, a signal for her platoon. Isadora reacts with amusement akin to a schoolgirl’s giggles before moving forward. Known as ‘Joker’ within her platoon, she’s earned the nickname for setting up lethal traps around her equipment and creating explosive displays. This time, her sequence of explosions loosely mimics Tchaikovsky’s 1812 Overture. Attacking invading Russians, she deems it fitting to leave a lasting psychological impact on any survivors who may hear that tune in the future—believing that while physical wounds heal, psychological scars endure.</p>
+<p>Isadora reaches the approximate location of the data center, she meticulously scouts power lines and network cables despite getting soaked by dripping dark water and causing minor flooding. Navigating through shelves and motherboards, she expresses surprise. ‘This was a Bitcoin mining operation?’ Following Ethernet cables, she traces the route to the network equipment, stumbling upon a vociferating systems administrator.</p>
+<p>Silently maneuvering behind server cabinets, Isadora adeptly sets up a thin string onto the trigger of a shotgun, discreetly mounted on what appears to be an ordinary office desk in the dank warehouse. As the systems administrator berates and kicks a piece of expensive hardware, Isadora’s attention shifts momentarily. ‘ты кусок мусора’ (ty kusok musora), he exclaims. Circling around the office, Isadora calmly addresses him, ‘You should treat your equipment better, maybe give it a name, like Frank.’ Amid the technologist’s surprise, ‘Ё моё!’ he responds, ‘What are you doing here? Are you one of Mikhail’s girls?’ ‘No,’ retorts Isadora. ‘I’m here to dismantle this place after acquiring the GostCoin you’re mining. You can cooperate and maybe survive or cause me trouble, and I’ll leave you behind when I demolish this place. Your choice.’ His options are clear at this juncture: cooperate or remain silent.</p>
+<p>But he went for the third choice and lunges towards the shotgun Isadora earlier prepared. Being wholly untrained on such a weapon, he proceeded to pull it from the mount and catch on the string. Puzzled, this caused the nerd to look back pull again and shoot himself in the face, covering the cabinets with grey matter and skull fragments.</p>
+<div style="page-break-after: always;">
+
+</div>
+<h1 id="bernard-makes-a-deal">Bernard Makes a Deal</h1>
+<p>Bernard resided at the periphery of the city, in what city dwellers often dubbed the ‘exurbs.’ This location afforded him a retreat from the city’s hustle and bustle, offering a unique living arrangement. His dwelling was ingeniously fashioned from repurposed shipping containers, presenting an unconventional yet practical abode. Inside, the construction remained incomplete, a result of insufficient funds from the construction company. The outcome? A three-quarters finished house comprising two shipping containers on the ground floor, two more forming the second story, and an additional pair at the back, forming a garage. Despite its unassuming exterior, stepping inside revealed a 2 x 3 set of containers, leading to a vast 60 ft x 60 ft space equipped with all the comforts of an average home. The entire setup, including plumbing and electricity, came at a mere cost of $20,000, supplemented by an additional $10,000 investment. This unconventional dwelling provided an unparalleled level of seclusion, a luxury often absent within the city limits.</p>
+<p>Positioned within the cul-de-sac of an underdeveloped neighborhood, Bernard’s residence remained close to amenities yet distanced from the convenience of city life. However, its unobtrusive exterior spared him from unwanted attention. He efficiently communicated through a voice communication system linked to his cellphone, ensuring calls reached him regardless of his whereabouts. Today, a text from Basil indicating a visit in three hours brought a sense of anticipation. Basil, a consistently satisfied and distinctive customer, contrasted sharply with Bernard’s other clientele—private investigators and college students—whose demands often proved time-consuming. Expecting Basil’s arrival to occupy his evening, Bernard, fresh from The Farm, anticipated exchanging an array of goods in their customary trade.</p>
+<div style="page-break-after: always;">
+
+</div>
+<h1 id="isadora-finishes-a-job">Isadora Finishes a Job</h1>
+<p>Isadora’s breath hitched at the sight of the severed stump where the systems administrator’s head once sat. The crimson pool spreading from the lifeless body dulled the cold room’s sterile ambiance. She couldn’t help but contemplate the grim choice of “None of the above” - a choice that now meant a life ended, leaving her to navigate the intricate labyrinth of servers.</p>
+<p>Feeling around the corpse’s waist, Isadora’s fingers brushed across an access card, a wallet filled with useless remnants, and a handful of shiny, translucent rocks. One item, however, caught her attention - a keychain clasping a touch authentication device bearing the same scratches as the USB port on the nearby keyboard.</p>
+<p>As she attempted to activate the security measures, she was baffled by the lack of response. A strange contraption, akin to a credit card reader was mounted beneath the desk; the deceased had carried a similar device. Placing the key card into the slot beneath the desk, the screen flickered to life, demanding the elusive security key.</p>
+<p>With a nonchalant shrug, Isadora inserts the USB key into the keyboard, the faint blinking of its light, her touching it setting off a chain reaction. The once dormant servers hummed to life, monitors glowed with cryptic data, and the room’s lighting dimmed as if bowing to the macabre scene before her.</p>
+<p>Pondering what Mr. NOTA (None of the Above) was working she now has time to look at. While the servers spin up she looks at the terminal that the tech left open and found several familiar icons one being a Crypto-Coin Wallet and another a password manager. Quickly opening the password manager Isadora switches back and types the command <code>pilfer</code> and the mouse jiggler she plugged in earlier became an automated hacking device.</p>
+<p>Isadora, taking a moment as the servers whirred to life, examined the abandoned terminal. Icons adorned the screen, each hinting at the deceased’s digital world. Among them, a familiar sight caught her attention - a Crypto-Coin Wallet icon glimmered beside another labeled ‘Password Manager.’ Swiftly navigating to the password manager, Isadora deftly switched back to the terminal and keyed in the command <code>pilfer</code>. The mouse jiggler she had connected earlier transformed into an automated hacking tool, its activity lighting up the screen with a sequence of digital maneuvers.</p>
+<p>As Isadora contemplated her next move aloud, she swiftly dragged Mr. NOTA’s body, shrouded in shadows, and maneuvered it beneath one of the humming server racks. The eerie absence of any alarm or alert gave her a moment’s confidence. Humming a tune to herself, she set about preparing an explosive finale to conclude the unsettling evening.</p>
+<p>Reaching into her bag she pulls out what looks like a typical cyber pad, a flip top display and a two thumb keyboard that that she uses to message her proxy Niklos making them aware that NOTA Enterprises is about to have an explosive market sell off and he should prepare for the order. She gets back a three word message “Date and Symbol.” No longer humming and happy she writes back “Soon and IDK” making a joke about “I don’t know” being the stock symbol. An unamused response repeats “Dates and Symbol” causing Isadora to sit down on the ground and start searching through her pad for their stock symbol. Sending the expected response she gets back to the business of pilfering the data center for any good hardware or other tools that she could use. Unsurprisingly everything around is from the last Cypto currency boom. She grabs as many hard drives as she can find, before the planted explosives start to beep.</p>
+<p>While setting up the explosives to bring down the data center, Isadora comes across a growling small fur ball. “Is that you growling at me kitty?” It’s tail at firm attention like a dogs it obviously grew up around here with a dog pack. “You had better come with me, it’s not going to be safe here for much longer.” Isadora goes back to the techs station and takes out her little orange and white device from the techs desk.</p>
+<p>Her cyber pad beeps again, detonators syncronized, please press your departure window with three options of 1 minute, 5 minutes and 15 minutes. She chooses five, scoops up the growling cat and puts it in her bag and she laughs as the room is filled with small flashing lights that are about to explode.</p>
+<p>As the tense situation unfolded, Isadora reached into her bag and retrieved a cyber pad—a flip-top display paired with a dual-handed keyboard—resembling a typical communication device. With quick, precise keystrokes, she messaged her proxy, Niklos, alerting him to the imminent explosive market sell-off by NOTA Enterprises. She tapped out the message, urging Niklos to brace for the impending chaos. His response, a curt “Date and Symbol,” shifted her humming demeanor to one of focused determination.</p>
+<p>Pausing her actions, Isadora engaged in a brief exchange with Niklos, her amusement evident as she played along with a stock symbol joke. However, his insistence on specific details made her sit on the ground, retrieving the cyber pad to swiftly track down the company’s stock symbol. Once the necessary information was relayed, she refocused her attention on the task at hand—pillaging the data center for salvageable hardware.</p>
+<p>Surrounded by remnants of the past cryptocurrency boom, she seized as many hard drives as she could before the planted explosives began emitting telltale beeps, signaling the imminent detonation.</p>
+<p>In the midst of setting up the explosives, Isadora stumbled upon an unexpected encounter—a growling furball, small yet fierce. “You growling at me, kitty?” she quipped, noticing its dog-like stance, a clear sign it had grown up amid a canine pack. Concern etched her features. “You’re coming with me. It won’t be safe here for long.”</p>
+<p>Returning to the technician’s station, she retrieved a small orange and white device and stowed it securely. Her cyber pad chimed, offering detonator synchronization and a choice for her departure window. Swiftly selecting a five-minute interval, she scooped up the growling cat, securing it in her bag, a mischievous laugh escaping her lips as the room filled with flickering lights, heralding the impending explosions.</p>
+<div style="page-break-after: always;">
+
+</div>
+<h1 id="basil-makes-it-to-the-city">Basil makes it to the city</h1>
+<p>Basil deftly navigated his vehicle, maneuvering it off the now congested highway and onto the desolate outskirts near Bernards’ residence. As he approached, the eerie scene unfolded before him—a haunting tableau of a neighborhood reduced to charred remnants. Square piles of debris and blackened trees adorned the landscape, remnants of a community ill-prepared for the relentless threat of forest fires.</p>
+<p>Halting at a deserted stoplight, Basil felt an absurd sense of solitude in the desolation around him. With a cautious glance around, he decided to forgo the empty stop and proceeded on his journey, steering through the remnants of a neighborhood addition that clearly hadn’t adequately fortified itself against the recurrent menace of wildfires. The eerie silence enveloped him, amplifying the sense of desolation that permeated the scorched surroundings.</p>
+<p>Bernard, an aficionado of apocalypse preparation, resided atop a hill adjacent to a man-made reservoir and a cascading river flowing down the hillside. Fire wasn’t his foremost concern; rather, ensuring a breathable environment for himself and his awaited guest during the short trip from the gate to the secondary entrance held his immediate attention. “Where did I stash those CBRN gas masks from the pandemic onset? Aha!” Bernard exclaimed triumphantly, producing two masks and presenting them theatrically, reminiscent of Link from Zelda. “It’s dangerous to go alone! Take this.”</p>
+<p>In perfect synchronization with Bernard’s preparations, Basil’s arrival at Bernard’s abode followed the journey through desolation and up to the secluded “could’ve been private if we had a gate” neighborhood. Annoyed by the necessity to park at the gate and manually buzz for entry, Basil vented his frustration in a colorful blend of Polish and English. “Świński skurwiel, open up!” he bellowed into the microphone before slipping back into his car, muttering under his breath.</p>
+<p>The gate to Bernard’s Paradise swung open, allowing just enough space for Basil’s vehicle to slide through before it promptly shut behind him. Bernard had serendipitously found himself in the right place at the perfect time when this dramatically undervalued property hit the market. Initially deemed troublesome due to its water features, the property overlooked the city but necessitated navigating a narrow road to reach it. The developer, envisioning the place as an inheritance for his disinterested daughter, sold it at a bargain. Bernard, astutely poised to seize such an opportunity, wasted no time in claiming it as his own.</p>
+<p>Basil skillfully navigates his vehicle toward the improvised garage, a unique structure fashioned from two conjoined 10 x 20 shipping containers with the center dismantled and affixed to a sturdy support frame. The arrangement, although unconventional, skirted the need for excessive approval, considering that standard shipping containers were often stacked much higher for extensive transit. Basil’s knack for comprehending and deciphering local ordinances ensured compliance with city regulations, offering a smooth passage through inspections.</p>
+<p>As he brings the car to a halt, the headlights reveal a gas mask conveniently placed near the driver’s side. “At least he’s considerate enough to think of the little things,” Basil muses appreciatively. Maneuvering the vehicle the rest of the way in, he swings open his door and dons the gas mask, instantly experiencing an improvement in breathing compared to the previous makeshift damp towel around his face.</p>
+<div style="page-break-after: always;">
+
+</div>
+<h1 id="basil-drops-off-a-duffle-bag">Basil drops off a Duffle Bag</h1>
+<p>Basil stretched and contorted his tired muscles upon joining Bernard after the lengthy drive, a self-proclaimed attempt to loosen his stiffness. Fatigued from the journey, he greeted Bernard with a quick hug, dropped his travel bag, and sprawled across Bernard’s couch. “Why not come in and take a breather?” Bernard quipped with a smirk. The oversized duffle bag piqued Bernard’s curiosity, adorned with arm straps for convenient carrying. Inside, smaller bags appeared to be haphazardly crammed into the duffle bag.</p>
+<p>“Are these all…?” Bernard inquired.</p>
+<p>“Yup, filled to the brim. Last year’s harvest was terrible, but this year’s… overflowing,” Basil replied with nonchalance and motioning of his hands.</p>
+<p>“May I?” Bernard timidly asked.</p>
+<p>“Sure thing,” Basil replied, grinning in response.</p>
+<p>Unsealing the airtight duffle bag involved a process: loosening the tension straps, disengaging various accessories, and finally, unzipping a magnetic seal. As the bag was opened, a distinct fragrance permeated the air—a curious amalgamation of psilocybin mushrooms and marijuana, two primary crops from Basil’s cherished venture, The Farm. Amidst rows of fruit bushes and vegetables, these crops held a distinctive importance. While the psychedelic mushrooms were reserved for trade with Bernard, the rest served as vital components in enriching the soil for other produce.</p>
+<p>The Farm was a place of multiple roles—Basil’s retreat, a spot for Bernard’s occasional gardening weekends, and a storage area for goods, produce, and equipment. It wasn’t extravagant, merely a small cabin situated in front of a cliff face. Yet, behind this humble cabin was The Farm. From wall to wall, it was teeming with produce—some flourishing on the walls, others nestled in basins in the ceiling. Rows upon rows of beans, squash, hot peppers, and even corn adorned the space. The purpose of The Farm had evolved over the years. Initially conceived as a garden of air-cleaning plants to facilitate cliff-side living, it had transformed into a multi-story agricultural venture, complete with goldfish, salmon, and snails.</p>
+<p>Bernard shifted his gaze toward Basil, now sound asleep on the couch. He gently covered Basil with a woolen blanket, ensuring his comfort, and then turned his attention to the task at hand—cataloging Basil’s bountiful harvest.</p>
+<div style="page-break-after: always;">
+
+</div>
+<h1 id="bernard-gets-toys-for-basil">Bernard gets toys for Basil</h1>
+<p>As anticipated, the harvest yielded abundantly, granting Basil a substantial line of credit to procure supplies for his upcoming endeavor. Extracting a piece of paper from his pocket, Basil handed it to Bernard, signaling the beginning of their list:</p>
+<p>Bernard perused the inventory with keen interest:</p>
+<pre><code>1 x Cyber Pad
+1 x Ethernet Cable 50ft
+1 x Burst Transmitter</code></pre>
+<p>The list extended across two pages, detailing essential software, hardware, and specialized equipment.</p>
+<p>“I don’t usually ask, but…” Bernard began.</p>
+<p>“Don’t. It’s a routine gig, although the politics are a bit convoluted,” Basil remarked, cutting Bernard off mid-sentence.</p>
+<p>As if the couch was on fire Basil lept to his feet startling Bernard. “WHAT TIME IS IT!?”</p>
+<div style="page-break-after: always;">
+
+</div>
+<title>
+Stonebreaker and Hudson
+</title>
+<h2 id="by-the-mismi-zine"><img src="images/cover.png" alt="By the MISMI Zine" /></h2>
+<center>
+Call for Papers is always open, contact the editor for submissions.
+</center>
+</body>
+</html>
